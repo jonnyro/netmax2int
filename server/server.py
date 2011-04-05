@@ -8,6 +8,7 @@ while running
   Update job status for results. Removing from queue
 """
 import xmlrpclib
+import sys
 sys.path.append("../common")
 from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND
 import uuid
@@ -43,6 +44,7 @@ def setup_job(input_format_name,output_format_name):
 	global jobs
 	job = ExportJob(input_format_name,output_format_name)
 	jobs.append(job)
+	#print "Created job(%s): %s->%s" % (job.job_id,job.in_format,job.out_format)
 	return job.job_id()
 	
 def start_job(job_id):
@@ -63,5 +65,6 @@ if __name__ == "__main__":
 	
 	server = SimpleXMLRPCServer(("localhost", 8000))
 	print "Listening on port 8000..."
-	#server.register_function(is_even, "is_even")
+	server.register_function(setup_job, "setup_job")
+	#server.register_function(query_job_status, "query_job_status")
 	server.serve_forever()
