@@ -1,5 +1,16 @@
 #from common import FLAGS
 
+
+"""
+#XMLRPCLib sample from python docs
+import xmlrpclib
+
+proxy = xmlrpclib.ServerProxy("http://localhost:8000/")
+print "3 is even: %s" % str(proxy.is_even(3))
+print "100 is even: %s" % str(proxy.is_even(100))
+
+"""
+
 def max2ase(target,source,env):
 	
 	#For now, only process one file at a time
