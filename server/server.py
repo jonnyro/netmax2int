@@ -35,10 +35,12 @@ class ExportJob:
 jobs = []
 
 def get_job_output_dir():
-	pass
+	global job_output_dir
+	return job_output_dir
 	
 def get_job_submission_dir():
-	pass
+	global job_submission_dir
+	return job_submission_dir
 	
 def setup_job(input_format_name,output_format_name):
 	global jobs
@@ -67,10 +69,14 @@ def query_job_status(job_id):
 
 
 if __name__ == "__main__":
+	job_submission_dir='..\\input_drop'
+	job_output_dir='..\\output_drop'
 	
 	server = SimpleXMLRPCServer(("localhost", 8000))
 	print "Listening on port 8000..."
 	server.register_function(setup_job, "setup_job")
 	server.register_function(query_job_status, "query_job_status")
 	server.register_function(start_job, "start_job")
+	server.register_function(get_job_submission_dir, "get_job_submission_dir")
+	server.register_function(get_job_output_dir, "get_job_output_dir")
 	server.serve_forever()

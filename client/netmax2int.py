@@ -3,9 +3,12 @@
 from xmlrpclib import ServerProxy, Error
 
 import sys
+import os
+import time
+
 sys.path.append("../common")
 from common import get_status_string
-
+from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
 #XMLRPCLib sample from python docs
 import xmlrpclib
 
@@ -18,23 +21,27 @@ print "100 is even: %s" % str(proxy.is_even(100))
 """
 
 def max2ase(target,source,env):
-	
+	global jobserverproxy
 	#For now, only process one file at a time
 	source_max_file = str(source[0])
 	target_intermediate_file = str(target[0])
 
 	#Get drop location on network to submit jobs
 	job_submission_drop = jobserverproxy.get_job_submission_dir()
-	job_output_drop = jobserverpoxy.get_job_output_dir()
+	job_output_drop = jobserverproxy.get_job_output_dir()
 
 	#Set up the job, to get a jobid
 	job_id = jobserverproxy.setup_job('ase','max')
 
 	#Copy the input file to the job submission drop
 	#I use the system copy command because shutil.copyfile is slow for big files
-	ret = os.sytem("copy %s %s" % (source_max_file,job_submission_drop))
-
+	copy_cmd = "copy %s %s" % (source_max_file,job_submission_drop)
+	ret = os.system(copy_cmd)
+	
+	
 	if ret <> 0:
+		print "Unable to copy source to target"
+		print " copy command is: %s" % copy_cmd
 		sys.exit(-1) #or something kinder, like a catchable exception
 
 	#If we have reached this point, assume copy succeeded
@@ -54,10 +61,10 @@ def max2ase(target,source,env):
 			sys.exit(-1) #Probably could do better than this, maybe return(-1)
 		if (JOB_COMPLETE == response):
 			print "Jobserver indicates conversion is complete"
-		break #Leave loop
+			break #Leave loop
 
 	#Job is complete, retrieve results
-	job_output_path = os.path.join(job_submission_dir,job_id)
+	job_output_path = os.path.join(job_submission_drop,job_id)
 	ret = os.system("copy %s %s" % (job_output_path,target_intermediate_file))
 
 	#ideally the copy sets the proper name on the target intermediate file
@@ -66,10 +73,14 @@ def max2ase(target,source,env):
 
 	
 if __name__ == "__main__":
-	#max2ase(["output.ase"],["input.max"],None)
+	test_input_file = '..\\test_data\\max\\box.max'
+	test_output_file = '..\\output\\box.ase'
+	
+	jobserverproxy = ServerProxy("http://localhost:8000")
+	max2ase([test_output_file],[test_input_file],None)
 	# server = ServerProxy("http://localhost:8000") # local server
-	proxy = ServerProxy("http://localhost:8000")
-
+	
+"""
 	job_id = proxy.setup_job('max','ase')
 	print job_id
 	status = proxy.query_job_status(job_id)
@@ -83,4 +94,4 @@ if __name__ == "__main__":
 	status = proxy.query_job_status(job_id)
 	status_str = get_status_string(status)
 	print "Status: %s" % (status_str)
-	
+"""
