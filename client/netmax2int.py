@@ -27,15 +27,17 @@ def max2ase(target,source,env):
 	target_intermediate_file = str(target[0])
 
 	#Get drop location on network to submit jobs
+	print "Querying drop dir"
 	job_submission_drop = jobserverproxy.get_job_submission_dir()
 	job_output_drop = jobserverproxy.get_job_output_dir()
-
+	print "Setting up a job"
 	#Set up the job, to get a jobid
 	job_id = jobserverproxy.setup_job('ase','max')
 
 	#Copy the input file to the job submission drop
 	#I use the system copy command because shutil.copyfile is slow for big files
-	copy_cmd = "copy %s %s" % (source_max_file,job_submission_drop)
+	copy_cmd = "copy %s %s" % (source_max_file,os.path.join(job_submission_drop,job_id+'.max'))
+	print "Launching %s" % (copy_cmd)
 	ret = os.system(copy_cmd)
 	
 	

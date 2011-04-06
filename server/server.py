@@ -72,6 +72,7 @@ def pump():
 		if (status == JOB_IN_PROGRESS):
 			input_file = os.path.join(get_job_submission_dir(),job.job_id + ".max")
 			output_file = os.path.join(get_job_output_dir(),job.job_id + ".ase")
+			print "Launching conversion of %s to %s" % (input_file,output_file)
 			max2ase(input_file,output_file)
 			
 			#if completed ok
