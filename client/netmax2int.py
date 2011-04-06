@@ -1,4 +1,9 @@
 #from common import FLAGS
+# simple test program (from the XML-RPC specification)
+from xmlrpclib import ServerProxy, Error
+
+"""
+
 
 
 """
@@ -57,8 +62,14 @@ def max2ase(target,source,env):
      #ideally the copy sets the proper name on the target intermediate file
 
     return
-	
+"""	
 	
 if __name__ == "__main__":
-	max2ase(["output.ase"],["input.max"],None)
+	#max2ase(["output.ase"],["input.max"],None)
+	# server = ServerProxy("http://localhost:8000") # local server
+	proxy = ServerProxy("http://localhost:8000")
+
+	job_id = proxy.setup_job('max','ase')
+	#status = proxy.query_job_status("BLAH")
+	#print "Status: %s" % (status)
 	
