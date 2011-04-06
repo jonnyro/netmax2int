@@ -75,4 +75,12 @@ if __name__ == "__main__":
 	status = proxy.query_job_status(job_id)
 	status_str = get_status_string(status)
 	print "Status: %s" % (status_str)
+	#Start the job
+	proxy.start_job(job_id)
+	
+	#Check the status again
+	#status = proxy.query_job_status(job_id)
+	status = proxy.query_job_status(job_id)
+	status_str = get_status_string(status)
+	print "Status: %s" % (status_str)
 	

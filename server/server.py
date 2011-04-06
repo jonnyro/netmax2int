@@ -44,11 +44,16 @@ def setup_job(input_format_name,output_format_name):
 	global jobs
 	job = ExportJob(input_format_name,output_format_name)
 	jobs.append(job)
-	#print "Created job(%s): %s->%s" % (job.job_id,job.in_format,job.out_format)
+	print "Created job(%s): %s->%s" % (job.job_id,job.in_format,job.out_format)
 	return job.job_id
 	
 def start_job(job_id):
-	pass
+	global jobs
+	for job in jobs:
+		if (job.job_id == job_id):
+			job.job_status = JOB_IN_PROGRESS
+			break
+	return job.job_status
 
 def query_job_status(job_id):
 	global jobs
@@ -67,4 +72,5 @@ if __name__ == "__main__":
 	print "Listening on port 8000..."
 	server.register_function(setup_job, "setup_job")
 	server.register_function(query_job_status, "query_job_status")
+	server.register_function(start_job, "start_job")
 	server.serve_forever()
