@@ -99,8 +99,8 @@ def max2ase(input_file,output_file):
 	f = open(script_file,"r")
 	txt = f.read()
 	f.close()
-	txt = txt.replace("<input_file>",input_file)
-	txt = txt.replace("<output_file>",output_file)
+	txt = txt.replace("<input_file>",os.path.abspath(input_file))
+	txt = txt.replace("<output_file>",os.path.abspath(output_file))
 	
 	f = open("tmp.ms","w")
 	f.write(txt)

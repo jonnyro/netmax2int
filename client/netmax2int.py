@@ -67,8 +67,10 @@ def max2ase(target,source,env):
 			break #Leave loop
 
 	#Job is complete, retrieve results
-	job_output_path = os.path.join(job_submission_drop,job_id)
-	ret = os.system("copy %s %s" % (job_output_path,target_intermediate_file))
+	job_output_path = os.path.join(job_submission_drop,job_id+'.ase')
+	retrieve_cmd = "copy %s %s" % (job_output_path,target_intermediate_file)
+	print "Launching %s" % retrieve_cmd
+	ret = os.system(retrieve_cmd)
 
 	#ideally the copy sets the proper name on the target intermediate file
 
