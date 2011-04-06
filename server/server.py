@@ -45,7 +45,7 @@ def setup_job(input_format_name,output_format_name):
 	job = ExportJob(input_format_name,output_format_name)
 	jobs.append(job)
 	#print "Created job(%s): %s->%s" % (job.job_id,job.in_format,job.out_format)
-	return job.job_id()
+	return job.job_id
 	
 def start_job(job_id):
 	pass
