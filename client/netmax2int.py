@@ -50,6 +50,7 @@ def max2ase(target,source,env):
 
 	while True:
 		time.sleep(5) #So that we dont spin so fast
+		jobserverproxy.pump() #Trigger conversion of active items
 		response = jobserverproxy.query_job_status(job_id)
 		if (JOB_PENDING_START == response):
 			print "Job waiting for client to signal start."
