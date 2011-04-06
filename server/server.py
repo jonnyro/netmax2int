@@ -10,7 +10,7 @@ while running
 import xmlrpclib
 import sys
 sys.path.append("../common")
-from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND
+from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
 import uuid
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
@@ -66,5 +66,5 @@ if __name__ == "__main__":
 	server = SimpleXMLRPCServer(("localhost", 8000))
 	print "Listening on port 8000..."
 	server.register_function(setup_job, "setup_job")
-	#server.register_function(query_job_status, "query_job_status")
+	server.register_function(query_job_status, "query_job_status")
 	server.serve_forever()

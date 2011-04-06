@@ -2,20 +2,21 @@
 # simple test program (from the XML-RPC specification)
 from xmlrpclib import ServerProxy, Error
 
-"""
+import sys
+sys.path.append("../common")
+from common import get_status_string
 
-
-
-"""
 #XMLRPCLib sample from python docs
 import xmlrpclib
 
 proxy = xmlrpclib.ServerProxy("http://localhost:8000/")
+
+"""
 print "3 is even: %s" % str(proxy.is_even(3))
 print "100 is even: %s" % str(proxy.is_even(100))
 
 """
-
+"""
 def max2ase(target,source,env):
 	
 	#For now, only process one file at a time
@@ -70,6 +71,8 @@ if __name__ == "__main__":
 	proxy = ServerProxy("http://localhost:8000")
 
 	job_id = proxy.setup_job('max','ase')
-	#status = proxy.query_job_status("BLAH")
-	#print "Status: %s" % (status)
+	print job_id
+	status = proxy.query_job_status(job_id)
+	status_str = get_status_string(status)
+	print "Status: %s" % (status_str)
 	
