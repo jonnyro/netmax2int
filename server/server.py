@@ -70,10 +70,19 @@ def pump():
 		status = job.job_status
 		
 		if (status == JOB_IN_PROGRESS):
-			input_file = os.path.join(get_job_submission_dir(),job.job_id + ".max")
-			output_file = os.path.join(get_job_output_dir(),job.job_id + ".ase")
+			input_file = os.path.join(get_job_submission_dir(),job.job_id + job.in_format)
+			output_file = os.path.join(get_job_output_dir(),job.job_id + job.out_format)
 			print "Launching conversion of %s to %s" % (input_file,output_file)
-			max2ase(input_file,output_file)
+			
+			if ('max','ase') == (job.in_format,job.out_format):
+				ret = max2ase(input_file,output_file)
+			elif ('png','dds') == (job.in_format,job.out_format):
+				ret = png2dds(input_file,output_file)
+			elif ('psd','png') == (job.in_format,job.out_format):
+				ret = psd2png(input_file,output_file)
+			elif ('psd','dds') == (job.in_format,job.out_format):
+				ret = psd2dds(input_file,output_file)
+				
 			
 			#if completed ok
 			job.job_status = JOB_COMPLETE
@@ -93,7 +102,16 @@ def query_job_status(job_id):
 			return job.job_status
 	
 	return JOB_NOT_FOUND
-		
+
+def svg2png(input_file,output_fil):
+	pass	
+	
+def png2dds(input_file,output_file):
+	pass
+	
+def psd2png(input_file,output_file);	
+	pass
+	
 def max2ase(input_file,output_file):
 	script_file = "max2ase_template.ms"
 	f = open(script_file,"r")
