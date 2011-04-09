@@ -13,6 +13,10 @@ import os
 sys.path.append("../common")
 from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
 import uuid
+import psd2png
+import png2dds
+import max2ase
+
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
@@ -75,13 +79,14 @@ def pump():
 			print "Launching conversion of %s to %s" % (input_file,output_file)
 			
 			if ('max','ase') == (job.in_format,job.out_format):
-				ret = max2ase(input_file,output_file)
+				ret = max2ase.max2ase(input_file,output_file)
 			elif ('png','dds') == (job.in_format,job.out_format):
-				ret = png2dds(input_file,output_file)
+				ret = png2dds.png2dds(input_file,output_file)
 			elif ('psd','png') == (job.in_format,job.out_format):
-				ret = psd2png(input_file,output_file)
+				ret = psd2png.psd2png(input_file,output_file)
 			elif ('psd','dds') == (job.in_format,job.out_format):
-				ret = psd2dds(input_file,output_file)
+				pass
+				#ret = psd2dds(input_file,output_file)
 				
 			
 			#if completed ok
@@ -103,37 +108,7 @@ def query_job_status(job_id):
 	
 	return JOB_NOT_FOUND
 
-def svg2png(input_file,output_fil):
-	pass	
-	
-def png2dds(input_file,output_file):
-	pass
-	
-def psd2png(input_file,output_file);	
-	pass
-	
-def max2ase(input_file,output_file):
-	script_file = "max2ase_template.ms"
-	f = open(script_file,"r")
-	txt = f.read()
-	f.close()
-	txt = txt.replace("<input_file>",os.path.abspath(input_file))
-	txt = txt.replace("<output_file>",os.path.abspath(output_file))
-	
-	f = open("tmp.ms","w")
-	f.write(txt)
-	f.close()
-
-	cmd = r'"C:\\Program Files\Autodesk\3ds Max 2009\3dsmax.exe" -U MAXScript tmp.ms'
-	ret = os.system(cmd)
-	
-	if ret <> 0:
-		print "Failure executing command"
-		print cmd
-		
-	#Optionally delete maxscript
-		
-	return 
+ 
 if __name__ == "__main__":
 	job_submission_dir='..\\input_drop'
 	job_output_dir='..\\output_drop'
