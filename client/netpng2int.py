@@ -32,7 +32,7 @@ def png2dds(target,source,env):
 	job_output_drop = jobserverproxy.get_job_output_dir()
 	print "Setting up a job"
 	#Set up the job, to get a jobid
-	job_id = jobserverproxy.setup_job('dds','png')
+	job_id = jobserverproxy.setup_job('png','dds')
 
 	#Copy the input file to the job submission drop
 	#I use the system copy command because shutil.copyfile is slow for big files
@@ -67,7 +67,7 @@ def png2dds(target,source,env):
 			break #Leave loop
 
 	#Job is complete, retrieve results
-	job_output_path = os.path.join(job_submission_drop,job_id+'.dds')
+	job_output_path = os.path.join(job_output_drop,job_id+'.dds')
 	retrieve_cmd = "copy %s %s" % (job_output_path,target_intermediate_file)
 	print "Launching %s" % retrieve_cmd
 	ret = os.system(retrieve_cmd)
