@@ -79,7 +79,7 @@ def png2dds(target,source,env):
 	
 if __name__ == "__main__":
 	test_input_file = '..\\test_data\\png\\boxes.png'
-	test_output_file = '..\\output\\boxes.png'
+	test_output_file = '..\\boxes.dds'
 	
 	jobserverproxy = ServerProxy("http://localhost:8000")
 	png2dds([test_output_file],[test_input_file],None)

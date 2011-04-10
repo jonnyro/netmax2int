@@ -76,6 +76,11 @@ def pump():
 		if (status == JOB_IN_PROGRESS):
 			input_file = os.path.join(get_job_submission_dir(),job.job_id + "." + job.in_format)
 			output_file = os.path.join(get_job_output_dir(),job.job_id + "." + job.out_format)
+			
+			#Make paths absolute before passing to exporter functions
+			input_file = os.path.abspath(input_file)
+			output_file = os.path.abspath(output_file)
+			
 			print "Launching (%s->%s) conversion of %s to %s" % (job.in_format,job.out_format,input_file,output_file)
 			
 			if ('max','ase') == (job.in_format,job.out_format):
