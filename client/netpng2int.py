@@ -1,5 +1,3 @@
-#from common import FLAGS
-# simple test program (from the XML-RPC specification)
 from xmlrpclib import ServerProxy, Error
 
 import sys
@@ -9,19 +7,13 @@ import time
 sys.path.append("../common")
 from common import get_status_string
 from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
-#XMLRPCLib sample from python docs
 import xmlrpclib
 
 proxy = xmlrpclib.ServerProxy("http://localhost:8000/")
 
-"""
-print "3 is even: %s" % str(proxy.is_even(3))
-print "100 is even: %s" % str(proxy.is_even(100))
-
-"""
-
 def png2dds(target,source,env):
 	global jobserverproxy
+
 	#For now, only process one file at a time
 	source_file = str(source[0])
 	target_intermediate_file = str(target[0])
@@ -31,6 +23,7 @@ def png2dds(target,source,env):
 	job_submission_drop = jobserverproxy.get_job_submission_dir()
 	job_output_drop = jobserverproxy.get_job_output_dir()
 	print "Setting up a job"
+	
 	#Set up the job, to get a jobid
 	job_id = jobserverproxy.setup_job('png','dds')
 
@@ -83,20 +76,3 @@ if __name__ == "__main__":
 	
 	jobserverproxy = ServerProxy("http://localhost:8000")
 	png2dds([test_output_file],[test_input_file],None)
-	# server = ServerProxy("http://localhost:8000") # local server
-	
-"""
-	job_id = proxy.setup_job('max','ase')
-	print job_id
-	status = proxy.query_job_status(job_id)
-	status_str = get_status_string(status)
-	print "Status: %s" % (status_str)
-	#Start the job
-	proxy.start_job(job_id)
-	
-	#Check the status again
-	#status = proxy.query_job_status(job_id)
-	status = proxy.query_job_status(job_id)
-	status_str = get_status_string(status)
-	print "Status: %s" % (status_str)
-"""

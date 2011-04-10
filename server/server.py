@@ -94,7 +94,9 @@ def pump():
 				#ret = psd2dds(input_file,output_file)
 				
 			
-			#if completed ok
+			#For now assume job is completed okay.  
+			# Next: Extend conversion functions to detect failure.
+			
 			job.job_status = JOB_COMPLETE
 			new_jobs_list.append(job)
 		else:
