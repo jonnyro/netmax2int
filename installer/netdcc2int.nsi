@@ -29,16 +29,24 @@ Section "" ;No components page, name is not important
   SetOutPath $INSTDIR
   
   ; Copy client
-  SetOutPath $INSTDIR/client
-  File /x *.pyc /x .git ..\client\* 
+  SetOutPath $INSTDIR\client
+  File /x *.pyc /x .git /x .gitignore ..\client\* 
   ; Copy server
-  SetOutPath $INSTDIR/server
-  File /x *.pyc /x .git  ..\server\*
+  SetOutPath $INSTDIR\server
+  File /x *.pyc /x .git /x .gitignore  ..\server\*
   ; Copy common
-  SetOutPath $INSTDIR/common
-  File /x *.pyc /x .git  ..\common\*
+  SetOutPath $INSTDIR\common
+  File /x *.pyc /x .git /x .gitignore  ..\common\*
   ; Copy third party
-  SetOutPath $INSTDIR/third_party
-  File /x *.pyc /x .git  ..\third_party\nvdxt.exe
-    
+  SetOutPath $INSTDIR\third_party
+  File /x *.pyc /x .git /x .gitignore  ..\third_party\nvdxt.exe
+  ; Copy input drop
+  SetOutPath $INSTDIR\input_drop
+  File /x *.pyc /x .git /x .gitignore  ..\input_drop\README.TXT
+  ; Copy output drop
+  SetOutPath $INSTDIR\output_drop
+  File /x *.pyc /x .git /x .gitignore  ..\output_drop\README.TXT
+
+
+  
 SectionEnd ; end the section
