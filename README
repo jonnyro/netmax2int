@@ -1,0 +1,35 @@
+I do a lot of building with scons. One of the most frustrating part of my @ work setup is that it launches 3dsmax during the build process, to convert a .max file to an intermediate representation. This limits me to being on a windows platform to do my builds.
+
+It also means I have to keep a preconfigured copy of max on every machine I will build from.
+
+I have set out to produce an alternative, that I can use easily from scons.
+
+Target Features
+1. Written in Python
+2. Use XMLRPC to allow client code to be separate from jobserver code.
+3. Support basic transformations of the following types: max->ase, png->dds, psd->png
+4. Does not require any of the binaries/tools for conversion to be installed on the client machine.
+
+Architecture
+1. Client example - a script that makes an XMLRPC call to a jobserver to register a new conversion job. Script is written to be easily converted into a SCons builder.
+2. File server - The interaction between client and jobserver is only to setup/start/signal_completion of jobs. The jobserver will provide the client with two directories, an input drop, and an output job, which can be network paths. The file server is just a samba share on the network.
+3. Job Server - The jobserver tracks active jobs, indexed by UUID, and for now performs the job itself.
+4. Conversion slave - not in current prototype, would be a refactoring of the conversion portion of the jobserver. This would let you have multiple conversions going at once on multiple machines.
+
+Current Status
+I have a prototype on github that will happily convert png to dds. It uses nvdxt to do the conversion, and currently does not specify any arguments to nvdxt other than -file and -output. 
+
+I do have an example that converts max 2 ase, but i'm having issues testing it at home, long story. It really just needs some tweaking to the template maxscript.
+
+
+Source Code
+------------
+You can check out the source code from github: 
+https://github.com/jonnyro/netmax2int
+
+You can also grab a tarball snapshot here:
+https://github.com/jonnyro/netmax2int/tarball/master
+
+Collaboration
+------------
+If anyone is interested in playing along, especially in updating the template maxscript for max2ase conversion, i'd love your help.
