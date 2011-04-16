@@ -1,0 +1,33 @@
+import sys
+import os
+import platform
+import time
+
+env = Environment()
+
+#Assuming netdcc2tint is available.  The directory containing net_dcc2int must be accessable via environment variable.
+from xmlrpclib import ServerProxy, Error
+env['NET_DCC2INT_DIR'] = os.environ.get("NET_DCC2INT_DIR",None)
+sys.path.append(env['NET_DCC2INT_DIR'] + '/client')
+from netdcc2int import dcc2int
+
+
+jobserverproxy = ServerProxy("http://localhost:8000")
+def netmax2ase(target,source,env):
+	global jobserverproxy
+	#Assuming host is on localhost
+	
+	target_file = os.path.abspath(str(target[0]))
+	source_file = os.path.abspath(str(source[0]))
+	
+	dcc2int(target_file,'ase',source_file,'max',jobserverproxy)
+	return
+bld = Builder(action = netmax2ase,
+			src_suffix = '.max',
+			suffix=".ase")
+
+
+	
+env.Append(BUILDERS= {'MAX2ASE' : bld}) #Add builder to environment
+
+#Now to convert any file, just use env.MAX2ASE("filename.ase","filename.max")
