@@ -4,7 +4,7 @@ import sys
 import os
 import time
 
-sys.path.append("../common")
+sys.path.append(os.path.join(os.path.dirname(__file__),"../common"))
 from common import get_status_string
 from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
 #XMLRPCLib sample from python docs
@@ -42,8 +42,8 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 
 	while True:
 		time.sleep(5) #So that we dont spin so fast
-		jobserverproxy.pump() #Trigger conversion of active items
 		response = jobserverproxy.query_job_status(job_id)
+		print "raw job status is %s" % (response)
 		if (JOB_PENDING_START == response):
 			print "Job waiting for client to signal start."
 			#this is bad, we just sent start command
@@ -51,6 +51,9 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 			print "Job in server queue for conversion."
 		if (JOB_FAILED == response):
 			print "Server was unable to complete conversion"
+			sys.exit(-1) #Probably could do better than this, maybe return(-1)
+		if (JOB_NOT_FOUND == response):
+			print "Server lost our job, PANIC"
 			sys.exit(-1) #Probably could do better than this, maybe return(-1)
 		if (JOB_COMPLETE == response):
 			print "Jobserver indicates conversion is complete"
