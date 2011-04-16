@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../common')
 
-import png2dds
+import max2ase
 
 #Run simple conversion
-png2dds.png2dds('../test_data/png/boxes.png','../output_drop/boxes.dds')
+max2ase.max2ase('../test_data/max/box.max','../output_drop/box.ase')
