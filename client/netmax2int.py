@@ -32,7 +32,7 @@ def max2ase(target,source,env):
 	job_output_drop = jobserverproxy.get_job_output_dir()
 	print "Setting up a job"
 	#Set up the job, to get a jobid
-	job_id = jobserverproxy.setup_job('ase','max')
+	job_id = jobserverproxy.setup_job('max','ase')
 
 	#Copy the input file to the job submission drop
 	#I use the system copy command because shutil.copyfile is slow for big files
@@ -79,7 +79,7 @@ def max2ase(target,source,env):
 	
 if __name__ == "__main__":
 	test_input_file = '..\\test_data\\max\\box.max'
-	test_output_file = '..\\output\\box.ase'
+	test_output_file = '..\\box.ase'
 	
 	jobserverproxy = ServerProxy("http://localhost:8000")
 	max2ase([test_output_file],[test_input_file],None)
