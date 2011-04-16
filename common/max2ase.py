@@ -1,10 +1,32 @@
+import os
+
 def max2ase(input_file,output_file):
-	script_file = "max2ase_template.ms"
+	#The template should be in the same folder as the module source.
+	script_file = os.path.join(os.path.dirname(__file__),"max2ase_template.ms")
 	f = open(script_file,"r")
 	txt = f.read()
 	f.close()
-	txt = txt.replace("<input_file>",os.path.abspath(input_file))
-	txt = txt.replace("<output_file>",os.path.abspath(output_file))
+	
+	#Convert possible relative paths to absolute paths
+	input_file_abspath = os.path.abspath(input_file)
+	output_file_abspath = os.path.abspath(output_file)
+	
+	#Delete the output file if it already exists
+	if os.path.exists(output_file_abspath):
+		os.unlink(output_file_abspath)
+	
+	
+	#Escape backslashes
+	input_file_escaped = input_file_abspath.replace("\\","\\\\")
+	output_file_escaped = output_file_abspath.replace("\\","\\\\")
+	
+	
+	print (input_file,input_file_escaped,output_file,output_file_escaped)
+	
+	txt = txt.replace("<input_file>",input_file_escaped)
+	txt = txt.replace("<output_file>",output_file_escaped)
+	
+	
 	
 	f = open("tmp.ms","w")
 	f.write(txt)
