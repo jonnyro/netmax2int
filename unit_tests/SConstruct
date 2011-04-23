@@ -1,0 +1,34 @@
+import sys
+import os
+import platform
+import time
+
+env = Environment()
+
+#Assuming netdcc2tint is available.  The directory containing net_dcc2int must be accessable via environment variable.
+from xmlrpclib import ServerProxy, Error
+sys.path.append('../client')
+from netdcc2int import dcc2int
+
+
+jobserverproxy = ServerProxy("http://localhost:8000")
+def netpng2dds(target,source,env):
+	global jobserverproxy
+	#Assuming host is on localhost
+	
+	target_file = os.path.abspath(str(target[0]))
+	source_file = os.path.abspath(str(source[0]))
+	
+	dcc2int(target_file,'dds',source_file,'png',jobserverproxy)
+	return
+bld = Builder(action = netpng2dds,
+			src_suffix = '.png',
+			suffix=".dds")
+
+
+	
+env.Append(BUILDERS= {'PNG2DDS' : bld}) #Add builder to environment
+
+pngs = env.Glob("../test_data/png/*.png")
+
+ddss = env.PNG2DDS(pngs)

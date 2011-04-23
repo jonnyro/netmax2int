@@ -119,12 +119,12 @@ class WorkerThread(threading.Thread):
 				#Process png2dds conversions
 				if (len(ready_jobs_png2dds) > 0):
 					##Get the list of input files
-					input_files_max2ase = map(lambda job:os.path.abspath(os.path.join(get_job_submission_dir(),job.job_id + "." + job.in_format)),ready_jobs_png2dds)
+					input_files_png2dds = map(lambda job:os.path.abspath(os.path.join(get_job_submission_dir(),job.job_id + "." + job.in_format)),ready_jobs_png2dds)
 					##Get the list of output files
-					output_files_max2ase = map(lambda job:os.path.abspath(os.path.join(get_job_output_dir(),job.job_id + "." + job.out_format)),ready_jobs_png2dds)
+					output_files_png2dds = map(lambda job:os.path.abspath(os.path.join(get_job_output_dir(),job.job_id + "." + job.out_format)),ready_jobs_png2dds)
 					##Convert
-					print "Launching (%s->%s) conversion of %s to %s" % ('max','ase',input_files_max2ase,output_files_max2ase)
-					ret = max2ase.max2ase(input_files_max2ase,output_files_max2ase)
+					print "Launching (%s->%s) conversion of %s to %s" % ('max','ase',input_files_png2dds,output_files_png2dds)
+					ret = png2dds.png2dds(input_files_png2dds,output_files_png2dds)
 					##Process result
 					if (ret == 0):
 						for job in ready_jobs_png2dds:
