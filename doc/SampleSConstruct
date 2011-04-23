@@ -24,7 +24,8 @@ def netmax2ase(target,source,env):
 	return
 bld = Builder(action = netmax2ase,
 			src_suffix = '.max',
-			suffix=".ase")
+			suffix=".ase",
+			single_source=True)
 
 
 	

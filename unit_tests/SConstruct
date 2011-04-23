@@ -23,6 +23,7 @@ def netpng2dds(target,source,env):
 	return
 bld = Builder(action = netpng2dds,
 			src_suffix = '.png',
+			single_source = True,
 			suffix=".dds")
 
 
