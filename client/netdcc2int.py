@@ -22,7 +22,15 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 	job_output_drop = jobserverproxy.get_job_output_dir()
 	print "Setting up a job"
 	#Set up the job, to get a jobid
-	job_id = jobserverproxy.setup_job(source_format,target_format)
+	for attempts in range(1,5):
+		try:
+			job_id = jobserverproxy.setup_job(source_format,target_format)
+			break
+		except:
+			print "Unable to setup job, waiting 15 seconds to retry"
+			time.sleep(15)
+			
+			
 
 	#Copy the input file to the job submission drop
 	#I use the system copy command because shutil.copyfile is slow for big files
@@ -38,7 +46,15 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 
 	#If we have reached this point, assume copy succeeded
 	#signal server to start job
-	jobserverproxy.start_job(job_id)
+	for attempts in range(1,5):
+		try:
+			jobserverproxy.start_job(job_id)
+			break
+		except:
+			#Waiting for connection
+			print "Unable to start job, will re-attempt in 15 seconds"
+			time.sleep(15)
+		
 
 	while True:
 		time.sleep(5) #So that we dont spin so fast
