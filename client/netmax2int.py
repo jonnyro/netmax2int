@@ -53,19 +53,23 @@ def max2ase(target,source,env):
 	while True:
 		time.sleep(5) #So that we dont spin so fast
 		jobserverproxy.pump() #Trigger conversion of active items
-		response = jobserverproxy.query_job_status(job_id)
-		if (JOB_PENDING_START == response):
-			print "Job waiting for client to signal start."
-			#this is bad, we just sent start command
-		if (JOB_IN_PROGRESS == response):
-			print "Job in server queue for conversion."
-		if (JOB_FAILED == response):
-			print "Server was unable to complete conversion"
-			sys.exit(-1) #Probably could do better than this, maybe return(-1)
-		if (JOB_COMPLETE == response):
-			print "Jobserver indicates conversion is complete"
-			break #Leave loop
-
+		try:
+			response = jobserverproxy.query_job_status(job_id)
+			if (JOB_PENDING_START == response):
+				print "Job waiting for client to signal start."
+				#this is bad, we just sent start command
+			if (JOB_IN_PROGRESS == response):
+				print "Job in server queue for conversion."
+			if (JOB_FAILED == response):
+				print "Server was unable to complete conversion"
+				sys.exit(-1) #Probably could do better than this, maybe return(-1)
+			if (JOB_COMPLETE == response):
+				print "Jobserver indicates conversion is complete"
+				break #Leave loop
+		except:
+			print "Error looking up status, waiting 15 seconds, then trying again"
+			time.sleep(15)
+				
 	#Job is complete, retrieve results
 	job_output_path = os.path.join(job_output_drop,job_id+'.ase')
 	retrieve_cmd = "copy %s %s" % (job_output_path,target_intermediate_file)
