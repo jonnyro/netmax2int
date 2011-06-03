@@ -69,7 +69,11 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 
 	while True:
 		time.sleep(5) #So that we dont spin so fast
-		response = jobserverproxy.query_job_status(job_id)
+		try:
+			response = jobserverproxy.query_job_status(job_id)
+		except socket.error, (value,message):
+			time.sleep(15)
+			continue
 		print "raw job status is %s" % (response)
 		if (JOB_PENDING_START == response):
 			print "Job waiting for client to signal start."
