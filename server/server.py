@@ -18,7 +18,7 @@ import png2dds
 import max2ase
 import traceback
 import threading
-
+from socket import getfqdn
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 """
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 	job_output_dir=os.path.abspath('..\\output_drop')
 	worker = WorkerThread()
 	worker.start()
-	server = SimpleXMLRPCServer(("localhost", 8000))
+	server = SimpleXMLRPCServer((getfqdn(), 8000))
 	
 	print "Listening on port 8000..."
 	server.register_function(setup_job, "setup_job")
