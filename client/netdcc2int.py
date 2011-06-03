@@ -26,7 +26,7 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 
 	#Copy the input file to the job submission drop
 	#I use the system copy command because shutil.copyfile is slow for big files
-	copy_cmd = "copy %s %s" % (source_file,os.path.join(job_submission_drop,job_id+"."+source_format))
+	copy_cmd = "copy %s %s" % (source_file,job_submission_drop + '\\' + job_id+"."+source_format)
 	print "Launching %s" % (copy_cmd)
 	ret = os.system(copy_cmd)
 	
