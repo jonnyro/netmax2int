@@ -1,5 +1,5 @@
 from xmlrpclib import ServerProxy, Error
-
+import socket
 import sys
 import os
 import time
@@ -18,15 +18,26 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 
 	#Get drop location on network to submit jobs
 	print "Querying drop dir"
-	job_submission_drop = jobserverproxy.get_job_submission_dir()
-	job_output_drop = jobserverproxy.get_job_output_dir()
+	
+	for attempts in range(1,5):
+		try:	
+			job_submission_drop = jobserverproxy.get_job_submission_dir()
+			break
+		except socket.error, (value,message): 
+			time.sleep(15)
+	for attempts in range(1,5):
+		try:
+			job_output_drop = jobserverproxy.get_job_output_dir()
+			break
+		except socket.error, (value,message): 
+			time.sleep(15)
 	print "Setting up a job"
 	#Set up the job, to get a jobid
 	for attempts in range(1,5):
 		try:
 			job_id = jobserverproxy.setup_job(source_format,target_format)
 			break
-		except:
+		except socket.error, (value,message): 
 			print "Unable to setup job, waiting 15 seconds to retry"
 			time.sleep(15)
 			
@@ -50,7 +61,7 @@ def dcc2int(target_file,target_format,source_file,source_format,jobserverproxy):
 		try:
 			jobserverproxy.start_job(job_id)
 			break
-		except:
+		except socket.error, (value,message): 
 			#Waiting for connection
 			print "Unable to start job, will re-attempt in 15 seconds"
 			time.sleep(15)
