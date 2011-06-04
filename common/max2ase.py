@@ -36,7 +36,7 @@ def max2ase(input_files,output_files):
 	f.write(txt)
 	f.close()
 
-	cmd = r'"C:\\Program Files\Autodesk\3ds Max 2009\3dsmax.exe" -U MAXScript tmp.ms'
+	cmd = r'"C:\\Program Files\Autodesk\3ds Max 2011\3dsmax.exe" -U MAXScript tmp.ms'
 	ret = os.system(cmd)
 	
 	if ret <> 0:
