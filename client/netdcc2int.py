@@ -5,12 +5,10 @@ import os
 import time
 
 sys.path.append(os.path.join(os.path.dirname(__file__),"../common"))
-from common import get_status_string
-from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
-#XMLRPCLib sample from python docs
-import xmlrpclib
 
-proxy = xmlrpclib.ServerProxy("http://localhost:8000/")
+from common import JOB_PENDING_START, JOB_IN_PROGRESS, JOB_FAILED, JOB_COMPLETE, JOB_NOT_FOUND, get_status_string
+
+import xmlrpclib
 
 
 
@@ -108,19 +106,3 @@ if __name__ == "__main__":
 	jobserverproxy = ServerProxy("http://localhost:8000")
 	dcc2int(test_output_file,'ase',test_input_file,'max',jobserverproxy)
 	# server = ServerProxy("http://localhost:8000") # local server
-	
-"""
-	job_id = proxy.setup_job('max','ase')
-	print job_id
-	status = proxy.query_job_status(job_id)
-	status_str = get_status_string(status)
-	print "Status: %s" % (status_str)
-	#Start the job
-	proxy.start_job(job_id)
-	
-	#Check the status again
-	#status = proxy.query_job_status(job_id)
-	status = proxy.query_job_status(job_id)
-	status_str = get_status_string(status)
-	print "Status: %s" % (status_str)
-"""
