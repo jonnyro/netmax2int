@@ -76,10 +76,7 @@ def mark_job_complete(job_id):
 			return jobs[i].job_status
 	return JOB_NOT_FOUND
 
-def pump():
-	""" Do nothing now """
-	return ""
-	
+
 working = True
 	
 class WorkerThread(threading.Thread):
@@ -164,8 +161,11 @@ def query_job_status(job_id):
 
  
 if __name__ == "__main__":
-	job_submission_dir=os.path.abspath('..\\input_drop')
-	job_output_dir=os.path.abspath('..\\output_drop')
+	
+	
+
+	job_submission_dir=os.environ.get("NET_DCC2INT_INPUT_DIR",os.path.abspath('..\\input_drop'))
+	job_output_dir=os.environ.get("NET_DCC2INT_OUTPUT_DIR",os.path.abspath('..\\output_drop'))
 	worker = WorkerThread()
 	worker.start()
 	server = SimpleXMLRPCServer((getfqdn(), 8000))
@@ -176,5 +176,5 @@ if __name__ == "__main__":
 	server.register_function(start_job, "start_job")
 	server.register_function(get_job_submission_dir, "get_job_submission_dir")
 	server.register_function(get_job_output_dir, "get_job_output_dir")
-	server.register_function(pump, "pump")
+	
 	server.serve_forever()
